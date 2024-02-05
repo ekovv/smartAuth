@@ -25,8 +25,8 @@ func New(log *slog.Logger, port int) *App {
 	}
 }
 
-func (a *App) Run() error {
-	const op = "grpcapp.Run"
+func (a *App) MustRun() error {
+	const op = "grpcapp.MustRun"
 	log := a.log.With(slog.String("op", op), slog.Int("port", a.port))
 
 	l, err := net.Listen("tcp", fmt.Sprintf("%:d", a.port))
