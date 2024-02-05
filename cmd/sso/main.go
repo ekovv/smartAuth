@@ -3,7 +3,10 @@ package main
 import (
 	"log/slog"
 	"os"
+	"os/signal"
+	"smartAuth/internal/app"
 	"smartAuth/internal/config"
+	"syscall"
 )
 
 const (
@@ -18,11 +21,20 @@ func main() {
 	log.Info("starting app",
 		slog.Any("cfg", cfg))
 
-	log.Debug("debug message")
-
+	application := app.New(log, cfg.GRPC.Port, cfg.StoragePath, cfg.TokenTTL)
+	go application.GRPCSrv.MustRun()
 	// TODO: инициализировать логгер
 	// TODO: инициализировать приложение (app)
 	// TODO: запустить grpc сервер приложения
+
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
+
+	sign := <-stop
+	log.Info("stopping application", slog.String("signal", sign.String()))
+
+	application.GRPCSrv.Stop()
+	log.Info("application stopped")
 
 }
 

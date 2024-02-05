@@ -29,7 +29,7 @@ func (a *App) MustRun() error {
 	const op = "grpcapp.MustRun"
 	log := a.log.With(slog.String("op", op), slog.Int("port", a.port))
 
-	l, err := net.Listen("tcp", fmt.Sprintf("%:d", a.port))
+	l, err := net.Listen("tcp", fmt.Sprintf(":%d", a.port))
 	if err != nil {
 		return fmt.Errorf("%s : %w", op, err)
 	}
