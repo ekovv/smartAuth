@@ -116,6 +116,7 @@ func (a *Auth) RegisterNewUser(ctx context.Context, email string, pass string) (
 		log.Error("failed to save user", err)
 		return 0, fmt.Errorf("%s : %w", op, err)
 	}
+
 	log.Info("user registered")
 	return id, nil
 }
