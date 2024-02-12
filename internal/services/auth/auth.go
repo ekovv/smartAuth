@@ -77,6 +77,7 @@ func (a *Auth) Login(ctx context.Context, email string, password string, appID i
 
 		return "", fmt.Errorf("%s : %w", op, ErrInvalidCredentials)
 	}
+
 	app, err := a.appProvider.App(ctx, appID)
 	if err != nil {
 		return "", fmt.Errorf("%s : %w", op, err)
